@@ -1,3 +1,4 @@
+// domain/repository/AuthRepository.kt
 package com.shopapp.domain.repository
 
 import com.shopapp.data.local.TokenDataStore
