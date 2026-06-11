@@ -1,0 +1,25 @@
+fun main(){
+    println("Set en Motos")
+    val cilindradas = setOf(125, 250, 300, 600, 1000, 600, 125, 300)
+    println("cilindradas set: ${cilindradas}")
+    println("Operaciones de conjuntos")
+    val offRoad = setOf(125, 250, 300, 450)
+    val ciudad = setOf(125, 150, 200, 250, 300)
+    println("offRoad set: ${offRoad}")
+    println("ciudad set: ${ciudad}")
+    println("union: ${offRoad union ciudad}")
+    println("interseccion: ${offRoad intersect ciudad}")
+    println("substraccion: ${offRoad subtract ciudad}")
+    
+    println("Set Mutable")
+    val tiposMotos = mutableSetOf("Naked", "Deportiva", "Custom")
+    println(tiposMotos)
+    tiposMotos.add("Scooter")
+    println(tiposMotos)
+    tiposMotos.add("Naked") // No se duplicará
+    println(tiposMotos)
+    tiposMotos.remove("Deportiva")
+    println(tiposMotos)
+    println("Verificar si elemento existe ${"Scooter" in tiposMotos}")
+    println("Verificar si elemento existe ${"Deportiva" in tiposMotos}")
+}
