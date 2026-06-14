@@ -133,6 +133,38 @@ fun ProfileScreen(
 
         Spacer(Modifier.height(24.dp))
 
+        // DENTRO del Column, en el bloque de opciones antes del logout:
+        val profile = state.profile
+
+        if (profile?.isStaff == true) {
+            HorizontalDivider()
+
+            ListItem(
+                headlineContent   = {
+                    Text("Enviar notificación", fontWeight = FontWeight.Medium)
+                },
+                supportingContent = {
+                    Text("Envía un correo a uno o todos los usuarios")
+                },
+                leadingContent    = {
+                    Icon(
+                        imageVector        = Icons.Default.Send,
+                        contentDescription = null,
+                        tint               = MaterialTheme.colorScheme.primary,
+                    )
+                },
+                trailingContent   = {
+                    Icon(
+                        imageVector        = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                    )
+                },
+                modifier = Modifier.clickable(onClick = onSendNotification),
+            )
+
+            HorizontalDivider()
+        }
+
         // ── Botón cerrar sesión ───────────────────────────────
         var showConfirm by remember { mutableStateOf(false) }
 
