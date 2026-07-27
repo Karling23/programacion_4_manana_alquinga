@@ -2,21 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
-import 'package:modulo10_riverpod/screens/pantalla_busqueda.dart';
-import 'package:modulo10_riverpod/screens/pantalla_dashboard.dart';
-import 'package:modulo10_riverpod/screens/pantalla_metricas.dart';
-import 'package:modulo10_riverpod/screens/pantalla_servidores.dart';
-
-// Importa las pantallas a medida que las crees en cada paso:
-// import 'screens/pantalla_servidores.dart';
-// import 'screens/pantalla_busqueda.dart';
-// import 'screens/pantalla_metricas.dart';
-// import 'screens/pantalla_dashboard.dart';
+import 'package:modulo10_riverpod/screens/pantalla_busqueda_mp.dart';
+import 'package:modulo10_riverpod/screens/pantalla_dashboard_mp.dart';
+import 'package:modulo10_riverpod/screens/pantalla_metricas_mp.dart';
+import 'package:modulo10_riverpod/screens/pantalla_servidores_mp.dart';
 
 // ┌──────────────────────────────────────────────────────────────────┐
 // │  Cambia este número y guarda (Ctrl+S) para navegar entre pasos. │
 // │  1  Paso 1  ProviderScope + StateProvider básico (contador)     │
-// │  2  Paso 2  NotifierProvider + lista de servidores              │
+// │  2  Paso 2  NotifierProvider + lista de motos                   │
 // │  3  Paso 3  Provider derivado + búsqueda filtrada               │
 // │  4  Paso 4  AsyncNotifierProvider + métricas loading/error      │
 // │  5  Paso 5  NavigationBar con dos tabs usando Riverpod          │
@@ -24,7 +18,7 @@ import 'package:modulo10_riverpod/screens/pantalla_servidores.dart';
 const int paso = 5;
 
 // StateProvider — estado simple del Paso 1
-final contadorProvider = StateProvider<int>((ref) => 5);
+final contadorProvider = StateProvider<int>((ref) => 12);
 
 void main() {
   runApp(const ProviderScope(child: AppMonitoreo()));
@@ -38,7 +32,7 @@ class AppMonitoreo extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0D47A1)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFF6F00)), // Naranja Concesionario
         useMaterial3: true,
       ),
       home: switch (paso) {
@@ -47,9 +41,6 @@ class AppMonitoreo extends StatelessWidget {
         3 => const PantallaBusqueda(),
         4 => const PantallaMetricas(),
         5 => const PantallaDashboard(),
-        // 3 => const PantallaBusqueda(),
-        // 4 => const PantallaMetricas(),
-        // 5 => const PantallaDashboard(),
         _ => Scaffold(
             body: Center(child: Text('Paso $paso: crea el widget primero'))),
       },
@@ -66,13 +57,13 @@ class _Paso1 extends ConsumerWidget {
     final count = ref.watch(contadorProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Servidores conectados')),
+      appBar: AppBar(title: const Text('Motos en Stock')),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text('$count', style: Theme.of(context).textTheme.displayLarge),
-            const Text('servidores activos'),
+            const Text('motocicletas disponibles para entrega rápida'),
           ],
         ),
       ),

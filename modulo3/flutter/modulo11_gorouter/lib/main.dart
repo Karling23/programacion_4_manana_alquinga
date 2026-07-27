@@ -1,16 +1,12 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:modulo11_gorouter/providers/auth_provider.dart';
-import 'package:modulo11_gorouter/router/app_router_paso4.dart';
-import 'package:modulo11_gorouter/router/app_router_paso5.dart';
-import 'package:modulo11_gorouter/router/approuterpaso2.dart';
-import 'package:modulo11_gorouter/router/approuterpaso3.dart';
-import 'router/app_router.dart';
-//import 'router/app_router_paso2.dart';
-//import 'router/app_router_paso3.dart';
-//import 'router/app_router_paso4.dart';
-//import 'router/app_router_paso5.dart';
+import 'package:modulo11_gorouter/providers/auth_provider_mp.dart';
+import 'package:modulo11_gorouter/router/app_router_paso4_mp.dart';
+import 'package:modulo11_gorouter/router/app_router_paso5_mp.dart';
+import 'package:modulo11_gorouter/router/approuterpaso2_mp.dart';
+import 'package:modulo11_gorouter/router/approuterpaso3_mp.dart';
+import 'router/app_router_mp.dart';
 
 // ┌──────────────────────────────────────────────────────────────────┐
 // │  Cambia este número y guarda (Ctrl+S) para navegar entre pasos. │
@@ -36,7 +32,6 @@ class AppMonitoreo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Observamos el estado de auth para que el router se regenere al cambiar
     ref.watch(authProvider);
 
     final router = switch (paso) {
@@ -49,15 +44,13 @@ class AppMonitoreo extends ConsumerWidget {
     };
 
     return MaterialApp.router(
-      title:        'Monitor SSH',
+      title:        'MotoVentas Premium',
       debugShowCheckedModeBanner: false,
       routerConfig: router,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0D47A1)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFF6F00)), // Naranja Concesionario
         useMaterial3: true,
       ),
     );
   }
 }
-
-

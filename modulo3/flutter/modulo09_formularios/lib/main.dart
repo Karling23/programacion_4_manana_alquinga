@@ -1,10 +1,10 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:modulo09_formularios/models/servidor_ssh.dart';
-import 'package:modulo09_formularios/screens/pantalla_busqueda.dart';
-import 'package:modulo09_formularios/screens/pantalla_servidores.dart';
-import 'package:modulo09_formularios/widgets/fila_servidor.dart';
-import 'package:modulo09_formularios/widgets/formulario_servidor.dart';
+import 'package:modulo09_formularios/models/servidor_ssh_mp.dart';
+import 'package:modulo09_formularios/screens/pantalla_busqueda_mp.dart';
+import 'package:modulo09_formularios/screens/pantalla_servidores_mp.dart';
+import 'package:modulo09_formularios/widgets/fila_servidor_mp.dart';
+import 'package:modulo09_formularios/widgets/formulario_servidor_mp.dart';
 
 const int paso = 5;
 
@@ -12,7 +12,7 @@ void main() => runApp(MaterialApp(
   debugShowCheckedModeBanner: false,
   theme: ThemeData(
     colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color(0xFF1B5E20),
+      seedColor: const Color(0xFFFF6F00), // Naranja para el concesionario de motos
     ),
     useMaterial3: true,
   ),
@@ -35,19 +35,19 @@ class _Paso1 extends StatefulWidget {
 }
 
 class _Paso1State extends State<_Paso1> {
-  final _ctrlHostname = TextEditingController();
-  final _ctrlIp       = TextEditingController();
-  final _ctrlPuerto   = TextEditingController(text: '22');
-  final _focusIp      = FocusNode();
-  final _focusPuerto  = FocusNode();
+  final _ctrlModelo     = TextEditingController();
+  final _ctrlMarca      = TextEditingController();
+  final _ctrlCilindrada = TextEditingController(text: '250');
+  final _focusMarca     = FocusNode();
+  final _focusCilindrada = FocusNode();
 
   @override
   void dispose() {
-    _ctrlHostname.dispose();
-    _ctrlIp.dispose();
-    _ctrlPuerto.dispose();
-    _focusIp.dispose();
-    _focusPuerto.dispose();
+    _ctrlModelo.dispose();
+    _ctrlMarca.dispose();
+    _ctrlCilindrada.dispose();
+    _focusMarca.dispose();
+    _focusCilindrada.dispose();
     super.dispose();
   }
 
@@ -56,7 +56,7 @@ class _Paso1State extends State<_Paso1> {
     final cs = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        title:           const Text('Conexión SSH'),
+        title:           const Text('Registro Rápido de Moto'),
         backgroundColor: cs.primaryContainer,
         foregroundColor: cs.onPrimaryContainer,
       ),
@@ -66,37 +66,36 @@ class _Paso1State extends State<_Paso1> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
-              controller:      _ctrlHostname,
+              controller:      _ctrlModelo,
               decoration:      const InputDecoration(
-                labelText:  'Hostname',
-                hintText:   'prod-web-01',
-                prefixIcon: Icon(Icons.dns),
+                labelText:  'Modelo de la Moto',
+                hintText:   'Ninja 400',
+                prefixIcon: Icon(Icons.motorcycle),
                 border:     OutlineInputBorder(),
               ),
               textInputAction: TextInputAction.next,
-              onSubmitted:     (_) => _focusIp.requestFocus(),
+              onSubmitted:     (_) => _focusMarca.requestFocus(),
             ),
             const SizedBox(height: 12),
             TextField(
-              controller:      _ctrlIp,
-              focusNode:       _focusIp,
+              controller:      _ctrlMarca,
+              focusNode:       _focusMarca,
               decoration:      const InputDecoration(
-                labelText:  'Dirección IP',
-                hintText:   '192.168.1.100',
-                prefixIcon: Icon(Icons.router),
+                labelText:  'Marca',
+                hintText:   'Kawasaki',
+                prefixIcon: Icon(Icons.branding_watermark),
                 border:     OutlineInputBorder(),
               ),
-              keyboardType:    TextInputType.number,
               textInputAction: TextInputAction.next,
-              onSubmitted:     (_) => _focusPuerto.requestFocus(),
+              onSubmitted:     (_) => _focusCilindrada.requestFocus(),
             ),
             const SizedBox(height: 12),
             TextField(
-              controller:  _ctrlPuerto,
-              focusNode:   _focusPuerto,
+              controller:  _ctrlCilindrada,
+              focusNode:   _focusCilindrada,
               decoration:  const InputDecoration(
-                labelText:  'Puerto SSH',
-                prefixIcon: Icon(Icons.lock_outline),
+                labelText:  'Cilindrada (cc)',
+                prefixIcon: Icon(Icons.speed),
                 border:     OutlineInputBorder(),
               ),
               keyboardType:    TextInputType.number,
@@ -110,22 +109,22 @@ class _Paso1State extends State<_Paso1> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      'Conectando a ${_ctrlHostname.text} '
-                      '(${_ctrlIp.text}:${_ctrlPuerto.text})',
+                      'Registrando ${_ctrlMarca.text} ${_ctrlModelo.text} '
+                      '(${_ctrlCilindrada.text} cc)',
                     ),
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
               },
-              icon:  const Icon(Icons.terminal),
-              label: const Text('Conectar'),
+              icon:  const Icon(Icons.save),
+              label: const Text('Registrar'),
             ),
             const SizedBox(height: 8),
             OutlinedButton(
               onPressed: () {
-                _ctrlHostname.clear();
-                _ctrlIp.clear();
-                _ctrlPuerto.text = '22';
+                _ctrlModelo.clear();
+                _ctrlMarca.clear();
+                _ctrlCilindrada.text = '250';
               },
               child: const Text('Limpiar campos'),
             ),
@@ -145,7 +144,7 @@ class _Paso2 extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        title:           const Text('Nuevo servidor'),
+        title:           const Text('Nueva Motocicleta'),
         backgroundColor: cs.primaryContainer,
         foregroundColor: cs.onPrimaryContainer,
       ),
@@ -156,7 +155,7 @@ class _Paso2 extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                    'Guardado: ${datos['nombre']} — ${datos['ip']}:${datos['puerto']}'),
+                    'Moto Guardada: ${datos['ip']} ${datos['nombre']} — ${datos['puerto']} cc (${datos['so']})'),
                 behavior: SnackBarBehavior.floating,
               ),
             );
@@ -175,15 +174,12 @@ class _Paso3 extends StatefulWidget {
 }
 
 class _Paso3State extends State<_Paso3> {
-  // Nota: Si tus clases heredan de un modelo base común (ej. 'Servidor'), 
-  // cambia el tipo de la lista de 'dynamic' al nombre de la clase padre.
   final List<dynamic> _servidores = [
-    ServidorSSH(id:'1', nombre:'prod-web-01',  ip:'10.0.2.10',   puerto:22,   usuario:'deploy',   so:'Ubuntu 24.04', ssl:true,  favorito:true),
-    ServidorSSH(id:'2', nombre:'prod-db-01',   ip:'10.0.2.20',   puerto:22,   usuario:'postgres', so:'Debian 12',    ssl:true),
-    ServidorSSH(id:'3', nombre:'staging-api',  ip:'10.0.3.10',   puerto:2222, usuario:'ubuntu',   so:'Ubuntu 24.04', ssl:false),
-    ServidorSSH(id:'4', nombre:'dev-sandbox',  ip:'192.168.1.5', puerto:22,   usuario:'vagrant',  so:'Alpine Linux', ssl:false),
-   
-    ServiciosWeb(id1:'5', nombre:'servicio web', ip:'192.168.1.2', puerto:80,   usuario:'Danna Gonzalez', favorito: false),
+    Moto(id:'1', modelo:'YZF-R1',  marca:'Yamaha',   cilindrada:998,   tipo:'Deportiva',   color:'Azul Racing', disponible:true,  favorito:true),
+    Moto(id:'2', modelo:'Ninja H2', marca:'Kawasaki', cilindrada:998,   tipo:'Deportiva',   color:'Verde KRT',   disponible:true),
+    Moto(id:'3', modelo:'CBR1000RR',marca:'Honda',    cilindrada:1000,  tipo:'Deportiva',   color:'Rojo HRC',    disponible:false),
+    Moto(id:'4', modelo:'Panigale V4', marca:'Ducati', cilindrada:1103,  tipo:'Deportiva',   color:'Rojo Ducati', disponible:true),
+    MotoAccesorio(id:'5', nombre:'Escape Akrapovič', marcaCompatibilidad:'Yamaha R1', precio:1200, descripcion:'Escape deportivo de titanio', favorito: false),
   ];
 
   @override
@@ -192,7 +188,7 @@ class _Paso3State extends State<_Paso3> {
 
     return Scaffold(
       appBar: AppBar(
-        title:           Text('Servidores (${_servidores.length})'),
+        title:           Text('Motos y Accesorios (${_servidores.length})'),
         backgroundColor: cs.primaryContainer,
         foregroundColor: cs.onPrimaryContainer,
       ),
@@ -201,9 +197,9 @@ class _Paso3State extends State<_Paso3> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.dns_outlined, size: 56, color: cs.onSurfaceVariant),
+                  Icon(Icons.two_wheeler, size: 56, color: cs.onSurfaceVariant),
                   const SizedBox(height: 12),
-                  Text('Sin servidores', style: TextStyle(color: cs.onSurfaceVariant)),
+                  Text('Sin productos en stock', style: TextStyle(color: cs.onSurfaceVariant)),
                 ],
               ),
             )
@@ -216,7 +212,6 @@ class _Paso3State extends State<_Paso3> {
                   servidor: item,
                   onFavorito: () {
                     setState(() {
-                      // Modifica de manera segura basándose en la propiedad real del objeto
                       item.favorito = !item.favorito;
                     });
                   },

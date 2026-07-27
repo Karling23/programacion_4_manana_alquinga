@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:modulo12_api/pantalla_paso1.dart';
-import 'package:modulo12_api/pantalla_paso1_users.dart';
-import 'package:modulo12_api/pantalla_paso2.dart';
-import 'package:modulo12_api/pantalla_paso2_users.dart';
-import 'package:modulo12_api/pantalla_paso3.dart';
+import 'package:modulo12_api/pantalla_paso1_mp.dart';
+import 'package:modulo12_api/pantalla_paso1_users_mp.dart';
+import 'package:modulo12_api/pantalla_paso2_mp.dart';
+import 'package:modulo12_api/pantalla_paso2_users_mp.dart';
+import 'package:modulo12_api/pantalla_paso3_mp.dart';
 
-// ── Importa cada pantalla cuando la crees (descomenta la línea) ──────────────
-// import 'pantalla_paso2.dart';   // ← Paso 2
-// import 'pantalla_paso3.dart';   // ← Paso 3
-// import 'pantalla_paso4.dart';   // ← Paso 4
-// import 'pantalla_paso5.dart';   // ← Paso 5
-
-// ── Pantalla temporal: muestra "próximamente" hasta que crees la pantalla real ─
 class PantallaTemporal extends StatelessWidget {
   final String titulo;
   const PantallaTemporal({required this.titulo, super.key});
@@ -44,7 +37,6 @@ class PantallaTemporal extends StatelessWidget {
   );
 }
 
-// ── Router — actualiza cada builder cuando crees la pantalla del paso ─────────
 final _router = GoRouter(
   initialLocation: '/',
   routes: [
@@ -58,11 +50,8 @@ final _router = GoRouter(
 
     GoRoute(path: '/paso3', builder: (_, __) => const PantallaPaso3()),
 
-    // Paso 4 → reemplaza por PantallaPaso4()
-    GoRoute(path: '/paso4', builder: (_, __) => const PantallaTemporal(titulo: 'Paso 4 · Errores tipados')),
-
-    // Paso 5 → reemplaza por PantallaPaso5()
-    GoRoute(path: '/paso5', builder: (_, __) => const PantallaTemporal(titulo: 'Paso 5 · Arquitectura completa')),
+    GoRoute(path: '/paso4', builder: (_, __) => const PantallaTemporal(titulo: 'Paso 4 · Errores tipados de compra')),
+    GoRoute(path: '/paso5', builder: (_, __) => const PantallaTemporal(titulo: 'Paso 5 · Repositorio completo de motos')),
   ],
 );
 
@@ -76,13 +65,12 @@ class AppHttp extends StatelessWidget {
     debugShowCheckedModeBanner: false,
     routerConfig: _router,
     theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange), // Naranja Concesionario
       useMaterial3: true,
     ),
   );
 }
 
-// ── Menú principal ─────────────────────────────────────────────────────────────
 class PantallaMenu extends StatelessWidget {
   const PantallaMenu({super.key});
 
@@ -92,40 +80,40 @@ class PantallaMenu extends StatelessWidget {
       _PasoInfo(
         ruta: '/paso1',
         titulo: 'Paso 1',
-        subtitulo: 'FutureBuilder crudo',
-        detalle: 'http.get() + FutureBuilder · JSONPlaceholder',
-        icono: Icons.network_ping,
+        subtitulo: 'FutureBuilder simple',
+        detalle: 'http.get() + FutureBuilder · Consulta de Moto',
+        icono: Icons.motorcycle,
         color: Colors.blue,
       ),
        _PasoInfo(
         ruta: '/paso1users',
-        titulo: 'Paso 1 Users',
-        subtitulo: 'Mostrar usuarios',
-        detalle: 'http.get() + FutureBuilder · JSONPlaceholder',
-        icono: Icons.network_ping,
+        titulo: 'Paso 1 Asesor',
+        subtitulo: 'Consultar Asesor',
+        detalle: 'http.get() + FutureBuilder · Detalles de Asesor',
+        icono: Icons.person,
         color: Color.fromARGB(255, 255, 143, 158),
       ),
       _PasoInfo(
         ruta: '/paso2',
         titulo: 'Paso 2',
-        subtitulo: 'DTO simple',
-        detalle: 'TodoDto.fromJson · lista de tareas',
-        icono: Icons.data_object,
+        subtitulo: 'DTO de Entregas',
+        detalle: 'TodoDto.fromJson · checklist de entrega de motos',
+        icono: Icons.checklist,
         color: Colors.green,
       ),
       _PasoInfo(
         ruta: '/paso2users',
-        titulo: 'Paso 2 Users',
-        subtitulo: 'Mostrar usuarios',
-        detalle: 'UserDto.fromJson · lista de usuarios',
-        icono: Icons.data_object,
+        titulo: 'Paso 2 Asesores',
+        subtitulo: 'Listar Asesores',
+        detalle: 'UserDto.fromJson · lista de asesores de ventas',
+        icono: Icons.people,
         color: Color.fromARGB(255, 241, 204, 134),
       ),
       _PasoInfo(
         ruta: '/paso3',
         titulo: 'Paso 3',
-        subtitulo: 'API real + modelo de dominio',
-        detalle: 'ProductoDto · toDomain() · API Platzi',
+        subtitulo: 'Catálogo de Accesorios',
+        detalle: 'ProductoDto · toDomain() · API Platzi Catálogo',
         icono: Icons.shopping_bag,
         color: Colors.orange,
       ),
@@ -133,15 +121,15 @@ class PantallaMenu extends StatelessWidget {
         ruta: '/paso4',
         titulo: 'Paso 4',
         subtitulo: 'Errores tipados',
-        detalle: 'sealed ApiError · Result<T>',
+        detalle: 'ApiError · Manejo de fallos de stock',
         icono: Icons.error_outline,
         color: Colors.red,
       ),
       _PasoInfo(
         ruta: '/paso5',
         titulo: 'Paso 5',
-        subtitulo: 'Arquitectura completa',
-        detalle: 'HttpClient · Repository · Riverpod Notifier',
+        subtitulo: 'Repositorio Completo',
+        detalle: 'HttpClient · Repositorio · Ventas Notifier',
         icono: Icons.architecture,
         color: Colors.purple,
       ),
@@ -149,7 +137,7 @@ class PantallaMenu extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Módulo 12 — API REST'),
+        title: const Text('MotoVentas Premium — Módulo REST API'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: ListView.separated(
