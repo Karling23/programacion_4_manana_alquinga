@@ -27,14 +27,6 @@ void main() {
 void main() {
   String? nombre;
 
-  // Sin verificar — error de compilación
-  // print(nombre.length);  // ERROR: nombre puede ser null
-
-  // Forma 1 — verificación explícita
-  if (nombre != null) {
-    print(nombre.length);  // aquí Dart sabe que nombre es String
-  }
-
   // Forma 2 — operador ?.
   print(nombre?.length);  // null, sin excepción
 

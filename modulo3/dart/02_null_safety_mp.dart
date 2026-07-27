@@ -21,9 +21,7 @@ void main() {
   // String extrasSeguro = accesoriosOpcionales!;  // lanza error si es null
 
   // Null check con if
-  if (colorPersonalizado != null) {
-    print('Color a pintar: $colorPersonalizado de longitud ${colorPersonalizado.length}');   // smart cast
-  }
+  print('Color a pintar: $colorPersonalizado de longitud ${colorPersonalizado.length}');   // smart cast
 
   // late - inicialización diferida
   late String chasisValidado;

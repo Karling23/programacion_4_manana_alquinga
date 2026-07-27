@@ -25,11 +25,6 @@ void main() {
 
   String? nombreGarante;
 
-  // Forma 1 - verificación explícita
-  if (nombreGarante != null) {
-    print('Garante registrado, longitud del nombre: ${nombreGarante.length}');  // aquí Dart sabe que es String
-  }
-
   // Forma 2 - operador ?.
   print(nombreGarante?.length);  // null, sin excepción
 

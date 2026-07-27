@@ -21,9 +21,7 @@ void main() {
   String ciudadSegura = ciudad!;  // lanza si ciudad es null
 
   // Null check con if
-  if (apellido != null) {
-    print(apellido.length);   // smart cast — ya es String aquí
-  }
+  print(apellido.length);   // smart cast — ya es String aquí
 
   // late — inicialización diferida (como lateinit en Kotlin)
   late String token;
