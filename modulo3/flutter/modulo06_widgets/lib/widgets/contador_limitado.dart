@@ -5,6 +5,8 @@ class ContadorLimitado extends StatefulWidget {
   final int          limite;
   final Color        color;          // parámetro extra para demostrar widget.param
   final VoidCallback? onLimite;      // callback opcional — se llama al alcanzar el límite
+  final String       textoBoton;
+  final int          pasoIncremento;
 
   const ContadorLimitado({
     super.key,
@@ -12,6 +14,8 @@ class ContadorLimitado extends StatefulWidget {
     this.limite  = 10,
     this.color   = Colors.indigo,
     this.onLimite,
+    this.textoBoton = 'Sumar',
+    this.pasoIncremento = 1,
   });
 
   @override
@@ -23,8 +27,8 @@ class _ContadorLimitadoState extends State<ContadorLimitado> {
 
   void _incrementar() {
     if (_valor >= widget.limite) return;    // defensa extra
-    setState(() => _valor++);
-    if (_valor == widget.limite) {
+    setState(() => _valor += widget.pasoIncremento);
+    if (_valor >= widget.limite) {
       widget.onLimite?.call();              // notifica al padre si registró un callback
     }
   }
@@ -45,7 +49,7 @@ class _ContadorLimitadoState extends State<ContadorLimitado> {
         // Barra de progreso que refleja el estado
         LinearProgressIndicator(
           value:           progreso,
-          color:           enLimite ? Colors.red : widget.color,   // ← widget.color
+          color:           enLimite ? widget.color : widget.color,   // ← widget.color
           backgroundColor: widget.color.withOpacity(0.15),
         ),
 
@@ -56,7 +60,7 @@ class _ContadorLimitadoState extends State<ContadorLimitado> {
           style: TextStyle(
             fontSize:   28,
             fontWeight: FontWeight.bold,
-            color:      enLimite ? Colors.red : widget.color,
+            color:      enLimite ? widget.color : widget.color,
           ),
         ),
 
@@ -64,11 +68,13 @@ class _ContadorLimitadoState extends State<ContadorLimitado> {
           mainAxisSize: MainAxisSize.min,
           children: [
             FilledButton(
+              style: FilledButton.styleFrom(backgroundColor: widget.color),
               onPressed: enLimite ? null : _incrementar,    // null = desactivado
-              child: const Text('Sumar'),
+              child: Text(widget.textoBoton),
             ),
             const SizedBox(width: 8),
             TextButton(
+              style: TextButton.styleFrom(foregroundColor: widget.color),
               onPressed: () => setState(() => _valor = 0),  // reiniciar
               child: const Text('Reset'),
             ),
@@ -77,7 +83,7 @@ class _ContadorLimitadoState extends State<ContadorLimitado> {
 
         if (enLimite)
           Text('Límite alcanzado',
-              style: TextStyle(fontSize: 12, color: Colors.red.shade700)),
+              style: TextStyle(fontSize: 12, color: widget.color)),
       ],
     );
   }

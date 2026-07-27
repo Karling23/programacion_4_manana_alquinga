@@ -9,9 +9,10 @@ class Reloj extends StatefulWidget {
 }
 
 class _RelojState extends State<Reloj> {
-  late Timer _timer;      // late — se asigna en initState, antes no existe
+  Timer ? _timer;    
   int  _segundos = 0;
   bool _pausado  = false;
+  List<int> _tiemposVuelta = [];
 
   @override
   void initState() {
@@ -20,7 +21,7 @@ class _RelojState extends State<Reloj> {
   }
 
   void _iniciarTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
       if (!mounted) return;   // ← protege setState en callbacks
       setState(() => _segundos++);
     });
@@ -30,7 +31,7 @@ class _RelojState extends State<Reloj> {
     setState(() {
       _pausado = !_pausado;
       if (_pausado) {
-        _timer.cancel();      // pausa: cancela el timer actual
+        _timer?.cancel();      // pausa: cancela el timer actual
       } else {
         _iniciarTimer();      // reanuda: crea un timer nuevo
       }
@@ -39,19 +40,24 @@ class _RelojState extends State<Reloj> {
 
   @override
   void dispose() {
-    _timer.cancel();          // ← SIEMPRE liberar en dispose
+    // _timer?.cancel();          // ← SIEMPRE liberar en dispose
     super.dispose();          // ← siempre al final
   }
 
-  String get _formato {
-    final h = _segundos ~/ 3600;
-    final m = (_segundos % 3600) ~/ 60;
-    final s = _segundos % 60;
+  String _formatearTiempo(int totalSegundos) {
+    final h = totalSegundos ~/ 3600;
+    final m = (totalSegundos % 3600) ~/ 60;
+    final s = totalSegundos % 60;
     return '$h:${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
+  }
+
+  String get _formato {
+    return _formatearTiempo(_segundos);
   }
 
   // Color cambia según el tiempo transcurrido
   Color get _colorTiempo {
+    if (_segundos > 120) return Colors.deepPurple;
     if (_segundos > 60) return Colors.red;
     if (_segundos > 30) return Colors.orange;
     return Colors.green;
@@ -81,11 +87,20 @@ class _RelojState extends State<Reloj> {
               label: Text(_pausado ? 'Reanudar' : 'Pausar'),
             ),
             const SizedBox(width: 8),
+            FilledButton.icon(
+              onPressed: _pausado ? null : () => setState(() {
+                _tiemposVuelta.add(_segundos);
+              }),
+              icon: const Icon(Icons.cached),
+              label: const Text('Vuelta'),
+            ),
+            const SizedBox(width: 8),
             TextButton(
               onPressed: () => setState(() {
-                _timer.cancel();
+                _timer?.cancel();
                 _segundos = 0;
                 _pausado  = false;
+                _tiemposVuelta.clear();
                 _iniciarTimer();
               }),
               child: const Text('Reiniciar'),
@@ -97,6 +112,12 @@ class _RelojState extends State<Reloj> {
           _pausado ? 'Pausado' : 'Corriendo',
           style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
         ),
+        const SizedBox(height: 16),
+        if (_tiemposVuelta.isNotEmpty)
+          Text(
+            'Última vuelta: ${_formatearTiempo(_tiemposVuelta.last)}',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
       ],
     );
   }

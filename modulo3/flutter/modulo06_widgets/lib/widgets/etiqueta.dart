@@ -17,14 +17,14 @@ class Etiqueta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //width: 36,
-      //height: 36,
-      //alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      width: 36,
+      height: 36,
       decoration: BoxDecoration(
         color:        color.withOpacity(relleno ? 0.3 : 0.12),
-        border:       Border(bottom: BorderSide(color: color, width: 2)),
+        border:       Border.all(color: color, width: 1.5),
         borderRadius: BorderRadius.circular(4),
+        
         boxShadow: [
           BoxShadow(
             color:      color.withOpacity(0.2),
@@ -32,7 +32,7 @@ class Etiqueta extends StatelessWidget {
             offset:     const Offset(0, 2),
           ),
         ],
-        //shape: BoxShape.circle,
+        shape: BoxShape.rectangle
       ),
       child: Text(
         texto,
@@ -40,6 +40,7 @@ class Etiqueta extends StatelessWidget {
           color:      color,
           fontWeight: FontWeight.w600,
           fontSize:   fontSize,
+          
         ),
       ),
     );

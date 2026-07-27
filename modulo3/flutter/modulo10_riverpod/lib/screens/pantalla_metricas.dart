@@ -1,4 +1,3 @@
-// lib/screens/pantalla_metricas.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/metrica_servidor.dart';
@@ -61,8 +60,8 @@ class _TarjetaMetrica extends StatelessWidget {
     final cs         = Theme.of(context).colorScheme;
     final cpuCritica = metrica.cpu > 85;
     final ramCritica = metrica.ram > 90;
-    final ssdCritica = metrica.ssd > 90;
-    final esCritico  = cpuCritica || ramCritica;
+    final ssdCritica = metrica.ssd > 90; 
+    final esCritico  = cpuCritica || ramCritica || ssdCritica;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
@@ -72,15 +71,26 @@ class _TarjetaMetrica extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(children: [
-              Icon(Icons.dns, color: esCritico ? cs.error : cs.primary, size: 18),
-              const SizedBox(width: 8),
-              Text(metrica.servidor,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              const Spacer(),
-              Text('${metrica.conexiones} conn',
-                  style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant)),
-            ]),
+            Row(
+              children: [
+                Icon(Icons.dns, color: esCritico ? cs.error : cs.primary, size: 18),
+                const SizedBox(width: 8),
+                Text(
+                  metrica.servidor,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const Spacer(),
+                Text(
+                  '${metrica.conexiones} conn',
+                  style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Almacenamiento: ${metrica.ssd.toStringAsFixed(0)} GB usados',
+              style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
+            ),
             const SizedBox(height: 10),
             _Barra('CPU', metrica.cpu, cpuCritica),
             const SizedBox(height: 4),

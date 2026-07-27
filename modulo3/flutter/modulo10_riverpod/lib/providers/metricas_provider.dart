@@ -10,11 +10,11 @@ class MetricasNotifier extends AsyncNotifier<List<MetricaServidor>> {
   Future<List<MetricaServidor>> _fetch() async {
     await Future.delayed(const Duration(milliseconds: 800));
     return const [
-      MetricaServidor(servidor:'prod-web-01', cpu:45.2, ram:62.1, ssd: 80.0, conexiones:230),
-      MetricaServidor(servidor:'prod-db-01',  cpu:88.1, ram:91.2, ssd: 90.0, conexiones:80),
-      MetricaServidor(servidor:'staging-api', cpu:22.4, ram:41.0, ssd: 70.0, conexiones:50),
-      MetricaServidor(servidor:'dev-nest-api', cpu:50.0, ram:75.0, ssd: 60.0, conexiones:50),
-      MetricaServidor(servidor:'dev-db-api', cpu:75.0, ram:50.0, ssd: 10.0, conexiones:50),
+      MetricaServidor(servidor:'prod-web-01', cpu:45.2, ram:62.1, conexiones:230, ssd: 80),
+      MetricaServidor(servidor:'prod-db-01',  cpu:88.1, ram:91.2, conexiones:80, ssd: 120),
+      MetricaServidor(servidor:'staging-api', cpu:22.4, ram:41.0, conexiones:50, ssd: 60),
+      MetricaServidor(servidor:'dev-nest-api', cpu:20.0, ram:12.0, conexiones:20, ssd: 40),
+      MetricaServidor(servidor:'dev-db-api',  cpu:5.0, ram:9.0, conexiones:5, ssd: 20),
     ];
   }
 
@@ -27,4 +27,4 @@ class MetricasNotifier extends AsyncNotifier<List<MetricaServidor>> {
 final metricasProvider =
     AsyncNotifierProvider<MetricasNotifier, List<MetricaServidor>>(
   MetricasNotifier.new,
-);  
+);

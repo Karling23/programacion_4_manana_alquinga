@@ -11,34 +11,41 @@ class ServicioEstado extends StatefulWidget {
 class _ServicioEstadoState extends State<ServicioEstado> {
   bool _activo    = true;
   int  _reinicios = 0;
-  String _nivel   = 'normal';
 
-  static const int _maxReinicios = 3;
+  // Cambiado de 3 a 1
+  static const int _maxReinicios = 1;
+
+  String nivel = 'normal';
+
+  void _actualizarNivel() {
+    if (_reinicios >= 2) {
+      nivel = 'critico';
+    } else if (_reinicios >= 1) {
+      nivel = 'warning';
+    } else {
+      nivel = 'normal';
+    }
+  }
+
+  // Lógica para definir el color del ícono según el nivel
+  Color _obtenerColorIcono() {
+    if (!_activo) return Colors.red; 
+    if (nivel == 'critico') return Colors.purple; // Color para crítico
+    if (nivel == 'warning') return Colors.orange; // Color para warning
+    return Colors.green; // Color para normal
+  }
 
   void _toggle() {
-    setState(() {              // notifica a Flutter → rebuild
+    setState(() {
       _activo = !_activo;
-      if (_activo) {
-        _reinicios++;
-        if (_reinicios >= 2) {
-          _nivel = 'critico';
-        } else if (_reinicios >= 1) {
-          _nivel = 'warning';
-        }
-      }
+      if (_activo) _reinicios++;
+      _actualizarNivel();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final enLimite = _reinicios >= _maxReinicios;
-    final colorIcono = !_activo
-        ? Colors.red
-        : _nivel == 'critico'
-            ? Colors.red
-            : _nivel == 'warning'
-                ? Colors.amber
-                : Colors.green;
 
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -46,18 +53,17 @@ class _ServicioEstadoState extends State<ServicioEstado> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
 
-          // ── Patrón 1: Ícono + color condicional ─────────────────
           Icon(
             _activo ? Icons.wifi : Icons.wifi_off,
             size:  72,
-            color: colorIcono,
+            color: _obtenerColorIcono(),
           ),
           const SizedBox(height: 8),
 
           Text(widget.nombre,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
 
-          // ── Patrón 2: Texto condicional ──────────────────────────
+          // Agregado fontStyle condicional
           Text(
             _activo ? 'En línea' : 'Fuera de línea',
             style: TextStyle(
@@ -69,7 +75,6 @@ class _ServicioEstadoState extends State<ServicioEstado> {
           ),
           const SizedBox(height: 16),
 
-          // ── Patrón 3: Widget que aparece / desaparece ────────────
           if (!_activo)
             Container(
               margin:     const EdgeInsets.only(bottom: 16),
@@ -90,33 +95,22 @@ class _ServicioEstadoState extends State<ServicioEstado> {
               ),
             ),
 
-          // ── Patrón 4: Botón con texto, color y estado dinámicos ──
+          // Cambiado a ElevatedButton.icon
           ElevatedButton.icon(
-            onPressed: enLimite ? null : _toggle,    // null = desactivado
+            onPressed: enLimite ? null : _toggle,
             icon: Icon(_activo ? Icons.stop : Icons.play_arrow),
             label: Text(_activo ? 'Detener servicio' : 'Iniciar servicio'),
             style: ElevatedButton.styleFrom(
               backgroundColor: _activo ? Colors.red.shade600 : Colors.green.shade600,
             ),
           ),
-          const SizedBox(height: 8),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _activo = true;
-                _reinicios = 0;
-                _nivel = 'normal';
-              });
-            },
-            child: const Text('Reiniciar todo'),
-          ),
           const SizedBox(height: 12),
 
-          // ── Patrón 5: Opacidad condicional ───────────────────────
+          // Opacidad cambiada a 0.1 cuando está en límite
           Opacity(
             opacity: enLimite ? 0.1 : 1.0,
             child: Text(
-              'Reinicios: $_reinicios / $_maxReinicios',
+              'Reinicios: $_reinicios / $_maxReinicios ($nivel)',
               style: TextStyle(
                 fontSize: 13,
                 color:    enLimite ? Colors.red : Colors.grey.shade600,
@@ -124,7 +118,6 @@ class _ServicioEstadoState extends State<ServicioEstado> {
             ),
           ),
 
-          // ── Patrón 6: Widget condicional por otro estado ─────────
           if (enLimite)
             Padding(
               padding: const EdgeInsets.only(top: 8),
@@ -134,6 +127,20 @@ class _ServicioEstadoState extends State<ServicioEstado> {
                     fontSize: 12, color: Colors.red.shade700, fontWeight: FontWeight.bold),
               ),
             ),
+          
+          const SizedBox(height: 16),
+
+          // Botón TextButton para reiniciar todo el estado
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _activo = true;
+                _reinicios = 0;
+                nivel = 'normal';
+              });
+            },
+            child: const Text('Reiniciar todo'),
+          ),
         ],
       ),
     );

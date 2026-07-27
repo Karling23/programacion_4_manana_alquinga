@@ -1,12 +1,10 @@
-// lib/main.dart
 import 'package:flutter/material.dart';
-import 'widgets/catalogo_basicos.dart';
-import 'widgets/etiqueta.dart';
-import 'widgets/servicio_estado.dart';
-import 'widgets/contador_limitado.dart';
-import 'widgets/reloj.dart';
-import 'screens/pantalla_contexto.dart';
-import 'widgets/indicador.dart';
+import 'package:modulo06_widgets/widgets/catalogo_basicos.dart';
+import 'package:modulo06_widgets/widgets/contador_limitado.dart';
+import 'package:modulo06_widgets/widgets/etiqueta.dart';
+import 'package:modulo06_widgets/widgets/pantalla_contexto.dart';
+import 'package:modulo06_widgets/widgets/reloj.dart';
+import 'package:modulo06_widgets/widgets/servicio_estado.dart';
 
 // ┌──────────────────────────────────────────────────────────────────┐
 // │  Cambia este número y guarda (Ctrl+S) para navegar entre pasos. │
@@ -19,11 +17,17 @@ import 'widgets/indicador.dart';
 // │  7  Paso 5   BuildContext                                        │
 // │  8  Paso 6   Composición de widgets                             │
 // └──────────────────────────────────────────────────────────────────┘
-const int paso = 8;
+const int paso = 7;
 
 void main() => runApp(MaterialApp(
   debugShowCheckedModeBanner: false,
-  theme: ThemeData(colorSchemeSeed: Colors.green),
+  theme: ThemeData(
+    colorScheme:  ColorScheme.fromSeed(
+      seedColor:  Colors.deepPurple,          // ← cambia aquí
+      brightness: Brightness.dark,     // ← Brightness.dark para modo oscuro
+    ),
+    useMaterial3: true,
+  ),
   home: switch (paso) {
     1 => const Scaffold(body: Center(child: Saludo())),
     2 => const CatalogoBasicos(),
@@ -54,15 +58,16 @@ void main() => runApp(MaterialApp(
           children: [
             ContadorLimitado(
               etiqueta: 'Intentos de login',
-              limite:   3,
-              color:    Colors.red,
+              limite:   1,
+              color:    Colors.deepPurple,
+              textoBoton: 'Intentar',
               onLimite: () => debugPrint('¡Cuenta bloqueada!'),
             ),
             const SizedBox(height: 40),
             ContadorLimitado(
               etiqueta: 'Conexiones activas',
               limite:   10,
-              color:    Colors.indigo,
+              color:    Colors.indigo, textoBoton: '',
             ),
           ],
         ),
@@ -73,55 +78,31 @@ void main() => runApp(MaterialApp(
       body: const Center(child: Reloj()),
     ),
     7 => const PantallaContexto(),    // Paso 5 — ya tiene su propio Scaffold
-    8 => Scaffold(                             // Paso 6
-      body: Center(
-        child: Wrap(
-          spacing:    32,
-          runSpacing: 24,
-          alignment:  WrapAlignment.center,
-          children: const [
-            Indicador(label: 'Servidores activos', valor: '8',
-                      color: Colors.green, icono: Icons.dns),
-            Indicador(label: 'Alertas críticas',   valor: '2',
-                      color: Colors.red,   icono: Icons.warning_amber,
-                      subtitulo: 'Requieren atención'),
-            Indicador(label: 'Tráfico',            valor: '4.2 GB',
-                      color: Colors.indigo),
-            Indicador(label: 'Uptime',             valor: '99.8%',
-                      color: Colors.teal, subtitulo: 'Últimos 30 días'),
-          ],
-        ),
-      ),
-    ),
     _ => Scaffold(body: Center(child: Text('Paso $paso: crea el widget primero'))),
   },
+  
 ));
-
 
 class Saludo extends StatelessWidget {
   const Saludo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Describe cómo se ve
+    // describe cómo se ve
     return const SelectableText(
-      'Aunque la NOAA detectó condiciones asociadas al fenómeno y modelos anti',
+      'Aunque la NOAA detectó condiciones asociadas al fenómeno y modelos anticipan un evento entre moderado y fuerte, aún no hay evidencias lo que serán los impactos.',
       style: TextStyle(
         fontSize: 32,
         fontWeight: FontWeight.bold,
         letterSpacing: 4,
-        color: Color.fromARGB(255, 58, 154, 183),
+        color: Colors.deepPurple,
         shadows: [
-          Shadow(
-            color: Colors.black26,
-            blurRadius: 4,
-            offset: Offset(2, 2),
-          ),
-        ],
-      ), // TextStyle
+          Shadow(color: Colors.black26, blurRadius: 4, offset: Offset(4, 4)),
+        ]
+      ),
       textAlign: TextAlign.left,
       //overflow: TextOverflow.ellipsis,
       maxLines: 3,
-    ); // Text
+    );
   }
 }

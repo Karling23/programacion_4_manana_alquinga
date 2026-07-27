@@ -19,4 +19,27 @@ class ServidorSSH {
     required this.ssl,
     this.favorito = false,
   });
+
+  
+}
+
+class ServiciosWeb {
+  final String id1;
+  final String nombre;
+  final String ip;
+  final int    puerto;
+  final String usuario;
+
+  bool         favorito;    // mutable — puede cambiar sin recrear el objeto
+
+  ServiciosWeb({
+    required this.id1,
+    required this.nombre,
+    required this.ip,
+    required this.puerto,
+    required this.usuario,
+    this.favorito = false,
+  });
+
+  
 }
